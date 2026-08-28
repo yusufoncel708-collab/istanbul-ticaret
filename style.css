@@ -1,0 +1,905 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+body {
+
+    min-height: 100vh;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            #7c3aed,
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 90% 90%,
+            #0891b2,
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            #08122e,
+            #172554,
+            #312e81
+        );
+}
+
+.hidden {
+    display: none !important;
+}
+
+button {
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 13px 20px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .15s;
+}
+
+button:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.1);
+}
+
+button:disabled {
+
+    opacity: .4;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+input {
+
+    outline: none;
+}
+
+
+/* =========================
+   GİRİŞ
+========================= */
+
+#loginScreen,
+#colorScreen {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+}
+
+.loginBox,
+.colorBox {
+
+    width: 430px;
+
+    max-width: 100%;
+
+    padding: 40px;
+
+    text-align: center;
+
+    border-radius: 28px;
+
+    background:
+        rgba(9,18,46,.94);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.55);
+}
+
+.logo {
+
+    font-size: 60px;
+}
+
+.loginBox h1,
+.colorBox h1 {
+
+    margin: 8px 0;
+
+    font-size: 30px;
+}
+
+.subtitle {
+
+    color: #cbd5e1;
+
+    line-height: 1.5;
+}
+
+.smallText {
+
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+.loginBox input {
+
+    width: 100%;
+
+    padding: 15px;
+
+    margin: 7px 0;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+}
+
+.loginBox button {
+
+    width: 100%;
+
+    margin: 7px 0;
+
+    background:
+        #f8fafc;
+
+    color:
+        #111827;
+}
+
+.or {
+
+    margin: 12px;
+
+    color: #94a3b8;
+
+    font-weight: bold;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   RENKLER
+========================= */
+
+.colorChoices {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin:
+        25px 0;
+}
+
+.colorChoice {
+
+    width: 60px;
+
+    height: 60px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    border:
+        4px solid
+        rgba(255,255,255,.25);
+
+    cursor: pointer;
+
+    transition:
+        transform .15s,
+        opacity .15s;
+}
+
+.colorChoice:hover {
+
+    transform:
+        scale(1.12);
+}
+
+.colorChoice.selected {
+
+    border:
+        5px solid white;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255,255,255,.25);
+
+    transform:
+        scale(1.12);
+}
+
+.colorChoice.used {
+
+    opacity: .15;
+
+    cursor:
+        not-allowed;
+
+    transform: none;
+}
+
+.selectedColorText {
+
+    min-height: 25px;
+
+    margin-bottom: 15px;
+
+    font-weight: bold;
+}
+
+#waitingText {
+
+    margin:
+        15px 0;
+
+    color:
+        #cbd5e1;
+}
+
+#startGameButton {
+
+    width: 100%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #16a34a
+        );
+
+    color: white;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+
+    height: 68px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 25px;
+
+    background:
+        rgba(0,0,0,.35);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.1);
+}
+
+.headerTitle {
+
+    font-size: 23px;
+
+    font-weight: bold;
+}
+
+.roomInfo {
+
+    background:
+        rgba(255,255,255,.1);
+
+    padding: 9px 15px;
+
+    border-radius: 10px;
+
+    color: #cbd5e1;
+}
+
+.roomInfo strong {
+
+    color: white;
+
+    letter-spacing: 3px;
+}
+
+
+/* =========================
+   OYUN
+========================= */
+
+.gameLayout {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        310px;
+
+    gap: 20px;
+
+    padding: 20px;
+
+    max-width: 1700px;
+
+    margin: auto;
+}
+
+.boardWrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    padding-bottom: 15px;
+}
+
+
+/* =========================
+   TAHTA
+========================= */
+
+#board {
+
+    width: 1100px;
+
+    height: 610px;
+
+    margin: auto;
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(12, 1fr);
+
+    grid-template-rows:
+        repeat(5, 1fr);
+
+    gap: 5px;
+
+    padding: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fef3c7,
+            #fde68a
+        );
+
+    border:
+        9px solid
+        #111827;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 55px
+        rgba(0,0,0,.55);
+
+    overflow: hidden;
+}
+
+.tile {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    min-width: 0;
+
+    min-height: 0;
+
+    padding: 7px;
+
+    border:
+        2px solid
+        rgba(15,23,42,.35);
+
+    border-radius: 9px;
+
+    color: #111827;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    overflow: visible;
+}
+
+.tile strong {
+
+    font-size: 13px;
+
+    line-height: 1.1;
+}
+
+.price {
+
+    margin-top: 5px;
+
+    font-size: 11px;
+}
+
+.property {
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #dbeafe
+        );
+}
+
+.start {
+
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #86efac
+        );
+}
+
+.wheel {
+
+    background:
+        conic-gradient(
+            #ef4444,
+            #facc15,
+            #22c55e,
+            #38bdf8,
+            #8b5cf6,
+            #ec4899,
+            #ef4444
+        );
+}
+
+.chance {
+
+    background:
+        linear-gradient(
+            135deg,
+            #facc15,
+            #fb923c
+        );
+}
+
+.tax {
+
+    background:
+        linear-gradient(
+            135deg,
+            #fb7185,
+            #ef4444
+        );
+}
+
+.jail {
+
+    background:
+        linear-gradient(
+            135deg,
+            #f97316,
+            #fdba74
+        );
+}
+
+.transport {
+
+    background:
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #2563eb
+        );
+}
+
+
+/* =========================
+   PİYON
+========================= */
+
+.pawns {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 3px;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 3px;
+
+    z-index: 30;
+
+    pointer-events: none;
+}
+
+.pawn {
+
+    width: 25px;
+
+    height: 37px;
+
+    position: relative;
+
+    flex-shrink: 0;
+
+    filter:
+        drop-shadow(
+            0 3px 3px
+            rgba(0,0,0,.5)
+        );
+}
+
+.pawn::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 13px;
+
+    height: 13px;
+
+    top: 0;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        var(--pawn-color);
+
+    border:
+        2px solid white;
+}
+
+.pawn::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 19px;
+
+    height: 23px;
+
+    top: 10px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        var(--pawn-color);
+
+    clip-path:
+        polygon(
+            35% 0,
+            65% 0,
+            70% 48%,
+            100% 100%,
+            0 100%,
+            30% 48%
+        );
+
+    border-radius:
+        5px 5px 9px 9px;
+
+    border:
+        2px solid white;
+}
+
+
+/* =========================
+   ZAR
+========================= */
+
+.centerControls {
+
+    text-align: center;
+
+    margin-top: 5px;
+}
+
+.dice {
+
+    width: 80px;
+
+    height: 80px;
+
+    margin:
+        0 auto 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 65px;
+}
+
+.dice.rolling {
+
+    animation:
+        diceSpin .65s
+        infinite linear;
+}
+
+@keyframes diceSpin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#rollButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #facc15,
+            #fb923c
+        );
+
+    color:
+        #111827;
+
+    font-size: 16px;
+}
+
+#turnText {
+
+    margin-top: 10px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   SAĞ PANEL
+========================= */
+
+.panel {
+
+    background:
+        rgba(2,6,23,.55);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius: 18px;
+
+    padding: 15px;
+
+    margin-bottom: 15px;
+}
+
+.panel h2 {
+
+    margin:
+        0 0 12px;
+
+    font-size: 17px;
+}
+
+#players {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.playerCard {
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border-left:
+        5px solid
+        var(--player-color);
+}
+
+.activePlayer {
+
+    outline:
+        2px solid
+        #facc15;
+
+    background:
+        rgba(250,204,21,.15);
+}
+
+#log {
+
+    height: 270px;
+
+    overflow-y: auto;
+
+    font-size: 12px;
+}
+
+.logItem {
+
+    padding: 7px 3px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.sideButtons {
+
+    display: flex;
+
+    gap: 8px;
+}
+
+.sideButtons button {
+
+    flex: 1;
+
+    background:
+        #f8fafc;
+
+    color:
+        #111827;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+#modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,.75);
+}
+
+#modalContent {
+
+    width: 600px;
+
+    max-width: 100%;
+
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #172554,
+            #312e81
+        );
+}
+
+.modalButton {
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    background:
+        #f8fafc;
+
+    color:
+        #111827;
+}
+
+
+@media(max-width:1000px) {
+
+    .gameLayout {
+
+        grid-template-columns: 1fr;
+    }
+
+}.roomCodeBox {
+    margin: 20px auto;
+    padding: 14px 22px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.roomCodeBox strong {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 26px;
+    letter-spacing: 4px;
+}
